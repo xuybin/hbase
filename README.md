@@ -1,6 +1,6 @@
 # xuybin/hbase
 
-## Run Hbase&Hadoop cluster with docker-compose
+## Run HBase&HDFS cluster with docker-compose
 In China
 ```bash
 docker rmi -f registry.cn-shenzhen.aliyuncs.com/xuybin/hbase && curl -L -s https://raw.githubusercontent.com/xuybin/hbase/master/docker-compose-aliyun.yml >docker-compose.yml && docker-compose up -d
@@ -27,7 +27,7 @@ docker volume ls
 docker volume inspect **_hdfs-master[slave1,slave2]
 ```
 
-## Verification Hbase&Hadoop cluster
+## Verification HBase&HDFS cluster
 ```bash
 HBaseRESTWeb:visit http://ip:8098
 ResourceManager:visit http://ip:8099
@@ -36,12 +36,12 @@ HBaseRegionWebSlave1:visit http://ip:16031
 HBaseRegionWebSlave2:visit http://ip:16032
 ```
 
-## Test Hbase&Hadoop cluster
+## Test HBase&HDFS cluster
 ```bash
 
 ```
 
-## Stop Hbase&Hadoop cluster
+## Stop HBase&HDFS cluster
 ```bash
 docker exec -it  master /bin/bash
     ./stop-hbase.sh
