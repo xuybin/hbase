@@ -1,13 +1,13 @@
 FROM alpine:latest
 
 VOLUME ["/hdfs"]
-RUN HBASE-VER=1.3.1 \
- && URL3="http://archive.apache.org/dist/hbase/$HBASE-VER/hbase-$HBASE-VER-bin.tar.gz" \
- && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE-VER/hbase-$HBASE-VER-bin.tar.gz" \
+RUN HBASE_VER=1.3.1 \
+ && URL3="http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
+ && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
 
  && apk --update add --no-cache wget tar openssh bash openjdk8 \
- && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE-VER.tar.gz" "$URL3" || \
-		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE-VER.tar.gz" "$URL4") \
+ && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
+		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL4") \
 		  
  && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
  && ssh-keygen -A \
@@ -21,7 +21,7 @@ RUN HBASE-VER=1.3.1 \
 	  } > /root/.ssh/config \
 	  		 
  && mkdir -p /hbase \
- && tar zxf hbase-$HBASE-VER.tar.gz -C /hbase --strip 1 \
+ && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
  && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
  
  && echo -e  '<?xml version="1.0"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n'\
@@ -87,7 +87,7 @@ RUN HBASE-VER=1.3.1 \
  
  
  && apk del wget tar \
- && rm -rf /hbase/doc /hbase-$HBASE-VER.tar.gz \
+ && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
  && rm -rf /var/cache/apk/* /tmp/*
  
 
