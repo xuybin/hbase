@@ -130,7 +130,7 @@ RUN HADOOP_VER=2.7.5 \
 
  && echo -e '#!/bin/bash\n'\
 'export JAVA_HOME=/usr/lib/jvm/default-jvm\n'\
-'export PATH=$PATH:$JAVA_HOME/bin:/hadoop/bin:/hadoop/sbin:/hbase/bin\n'\
+'export PATH=$PATH:/usr/lib/jvm/default-jvm:/hadoop/bin:/hadoop/sbin:/hbase/bin\n'\
 >/etc/profile.d/hbase.sh \
  && chmod -v +x /etc/profile.d/hbase.sh \
 
