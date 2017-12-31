@@ -9,7 +9,7 @@ RUN HADOOP_VER=2.7.5 \
  && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
 
  && apk --update add --no-cache wget tar openssh bash openjdk8 \
- && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$VEHADOOP_VERR.tar.gz" "$URL1" || \
+ && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL1" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL2") \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL4") \
