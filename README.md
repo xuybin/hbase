@@ -5,7 +5,8 @@ In China
 ```bash
 docker rmi -f registry.cn-shenzhen.aliyuncs.com/xuybin/hbase && curl -L -s https://raw.githubusercontent.com/xuybin/hbase/master/docker-compose-aliyun.yml >docker-compose.yml && docker-compose up -d
 docker exec -it  master /bin/bash
-    ./start-hbase.sh
+    /start-hbase.sh
+    jps
     exit
 docker-compose ps
 ```
@@ -13,7 +14,8 @@ Outside China
 ```bash
 docker rmi -f xuybin/hbase &&curl -L -s https://raw.githubusercontent.com/xuybin/hbase/master/docker-compose.yml >docker-compose.yml && docker-compose up -d
 docker exec -it  master /bin/bash
-    ./start-hbase.sh
+    /start-hbase.sh
+    jps
     exit
 docker-compose ps
 ```
@@ -44,7 +46,8 @@ HBaseRegionWebSlave2:visit http://ip:16032
 ## Stop HBase&HDFS cluster
 ```bash
 docker exec -it  master /bin/bash
-    ./stop-hbase.sh
+    /stop-hbase.sh
+    jps
     exit
 docker-compose stop
 ```
