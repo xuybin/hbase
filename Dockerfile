@@ -69,7 +69,7 @@ RUN HBASE_VER=1.3.1 \
  && chmod -v +x /etc/profile.d/hbase.sh \
 
  && echo -e '#!/bin/sh\n'\
-'if [ ! -d "/hdfs/namenode" ]; then\n'\
+'if [ ! -d "/hdfs/logs" ]; then\n'\
 '    mkdir -p /hdfs/logs /hdfs/pids /hdfs/tmp\n'\
 'fi\n'\
 'if [ -z ${SLAVES} ]; then\n'\
