@@ -118,12 +118,12 @@ RUN HADOOP_VER=2.7.5 \
 
  && echo -e '#!/bin/bash\n'\
 '/hadoop/sbin/start-dfs.sh\n'\
->/start-hbase.sh \
+>/start-hdfs.sh \
  && chmod -v +x /start-hdfs.sh \
  
  && echo -e '#!/bin/bash\n'\
 '/hadoop/sbin/stop-dfs.sh\n'\
->/stop-hbase.sh \
+>/stop-hdfs.sh \
  && chmod -v +x /stop-hdfs.sh \
  
   && echo -e '#!/bin/bash\n'\
