@@ -123,8 +123,8 @@ RUN HADOOP_VER=2.7.5 \
  && chmod -v +x /start-hbase.sh \
  
  && echo -e '#!/bin/bash\n'\
-'/hadoop/sbin/stop-dfs.sh\n'\
 '/hbase/bin/stop-hbase.sh\n'\
+'/hadoop/sbin/stop-dfs.sh\n'\
 >/stop-hbase.sh \
  && chmod -v +x /stop-hbase.sh \
 
