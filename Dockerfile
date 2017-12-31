@@ -152,6 +152,7 @@ RUN HADOOP_VER=2.7.5 \
 'if [ ! -z ${BKMS} ]; then\n'\
 '    awk "BEGIN{info=\"$BKMS\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/backup-masters\n'\
 'fi\n'\
+'/etc/profile.d/hbase.sh\n'\
 'exec /usr/sbin/sshd -D '\
 >/usr/local/bin/entrypoint.sh \
  && chmod -v +x /usr/local/bin/entrypoint.sh \
