@@ -29,8 +29,8 @@ docker volume inspect **_hdfs-master[slave1,slave2]
 
 ## Verification HBase&HDFS cluster
 ```bash
-HBaseRESTWeb:visit http://ip:8098
-ResourceManager:visit http://ip:8099
+NameNode:visit http://ip:50070
+HBaseRESTWeb:visit http://ip:50080
 HBaseMasterWeb:visit http://ip:16010
 HBaseRegionWebSlave1:visit http://ip:16031
 HBaseRegionWebSlave2:visit http://ip:16032
