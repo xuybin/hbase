@@ -6,8 +6,8 @@ services:
     hostname: master
     image: registry.cn-shenzhen.aliyuncs.com/xuybin/hbase
     ports:
-      - 8098:8080
-      - 8099:50070
+      - 50070:50070
+      - 50080:8080
       - 16010:16010
     volumes:
       - hdfs-master:/hdfs
