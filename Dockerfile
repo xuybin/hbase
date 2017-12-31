@@ -77,8 +77,8 @@ RUN HBASE_VER=1.3.1 \
 '    BKMS="slave1"\n'\
 'fi\n'\
 'awk "BEGIN{info=\"$SLAVES\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/regionservers\n'\
-'sed -i 's/#ZKS/$SLAVES/' hbase/conf/hbase-site.xml\n'\
-'if [ !-z ${BKMS} ]; then\n'\
+'sed -i "s/#ZKS/$ZKS/" hbase/conf/hbase-site.xml\n'\
+'if [ ! -z ${BKMS} ]; then\n'\
 '    awk "BEGIN{info=\"$BKMS\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/backup-masters\n'\
 'fi\n'\
 'exec /usr/sbin/sshd -D '\
