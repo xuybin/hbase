@@ -1,0 +1,51 @@
+version: "3"
+services:
+
+  master:
+    container_name: master
+    hostname: master
+    image: xuybin/hbase
+    ports:
+      - 8098:8080
+      - 8099:50070
+      - 16010:16010
+    volumes:
+      - hdfs-master:/hdfs
+    networks:
+      - habase
+    environment:
+      - BKMS=slave1
+      - ZKS=master,slave1,slave2
+      - SLAVES=slave1,slave2
+
+  slave1:
+    container_name: slave1
+    hostname: slave1
+    image: xuybin/hbase
+    ports:
+      - 16031:16030
+    volumes:
+      - hdfs-slave1:/hdfs
+    networks:
+      - habase
+    environment:
+      - SLAVES=slave1,slave2
+  slave2:
+    container_name: slave2
+    hostname: slave2
+    image: xuybin/hbase
+    ports:
+      - 16032:16030
+    volumes:
+      - hdfs-slave2:/hdfs
+    networks:
+      - habase
+    environment:
+      - SLAVES=slave1,slave2
+networks:
+  habase:
+
+volumes:
+  hdfs-master:
+  hdfs-slave1:
+  hdfs-slave2:
