@@ -29,7 +29,10 @@ services:
     networks:
       - habase
     environment:
+      - BKMS=slave1
+      - ZKS=master,slave1,slave2
       - SLAVES=slave1,slave2
+      
   slave2:
     container_name: slave2
     hostname: slave2
@@ -41,6 +44,8 @@ services:
     networks:
       - habase
     environment:
+      - BKMS=slave1
+      - ZKS=master,slave1,slave2
       - SLAVES=slave1,slave2
 networks:
   habase:

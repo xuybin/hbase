@@ -118,23 +118,16 @@ RUN HADOOP_VER=2.7.5 \
 
  && echo -e '#!/bin/bash\n'\
 '/hadoop/sbin/start-dfs.sh\n'\
->/start-hdfs.sh \
- && chmod -v +x /start-hdfs.sh \
- 
- && echo -e '#!/bin/bash\n'\
-'/hadoop/sbin/stop-dfs.sh\n'\
->/stop-hdfs.sh \
- && chmod -v +x /stop-hdfs.sh \
- 
-  && echo -e '#!/bin/bash\n'\
 '/hbase/bin/start-hbase.sh\n'\
 >/start-hbase.sh \
  && chmod -v +x /start-hbase.sh \
  
  && echo -e '#!/bin/bash\n'\
 '/hbase/bin/stop-hbase.sh\n'\
+'/hadoop/sbin/stop-dfs.sh\n'\
 >/stop-hbase.sh \
  && chmod -v +x /stop-hbase.sh \
+ 
 
  && echo -e '#!/bin/bash\n'\
 'export JAVA_HOME="/usr/lib/jvm/default-jvm"\n'\
@@ -159,6 +152,7 @@ RUN HADOOP_VER=2.7.5 \
 'if [ ! -z ${BKMS} ]; then\n'\
 '    awk "BEGIN{info=\"$BKMS\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/backup-masters\n'\
 'fi\n'\
+'source /etc/profile\n'\
 'exec /usr/sbin/sshd -D '\
 >/usr/local/bin/entrypoint.sh \
  && chmod -v +x /usr/local/bin/entrypoint.sh \
