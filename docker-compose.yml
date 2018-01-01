@@ -15,8 +15,8 @@ services:
       - habase
     environment:
       - BKMS=slave1
-      - ZKS=master,slave1,slave2
-      - SLAVES=slave1,slave2
+      - ZKS=slave1,slave2,slave3
+      - SLAVES=slave1,slave2,slave3
 
   slave1:
     container_name: slave1
@@ -30,8 +30,8 @@ services:
       - habase
     environment:
       - BKMS=slave1
-      - ZKS=master,slave1,slave2
-      - SLAVES=slave1,slave2
+      - ZKS=slave1,slave2,slave3
+      - SLAVES=slave1,slave2,slave3
       
   slave2:
     container_name: slave2
@@ -45,8 +45,23 @@ services:
       - habase
     environment:
       - BKMS=slave1
-      - ZKS=master,slave1,slave2
-      - SLAVES=slave1,slave2
+      - ZKS=slave1,slave2,slave3
+      - SLAVES=slave1,slave2,slave3
+      
+  slave3:
+    container_name: slave3
+    hostname: slave3
+    image: xuybin/hbase
+    ports:
+      - 16033:16030
+    volumes:
+      - hdfs-slave3:/hdfs
+    networks:
+      - habase
+    environment:
+      - BKMS=slave1
+      - ZKS=slave1,slave2,slave3
+      - SLAVES=slave1,slave2,slave3
 networks:
   habase:
 
@@ -54,3 +69,4 @@ volumes:
   hdfs-master:
   hdfs-slave1:
   hdfs-slave2:
+  hdfs-slave3:

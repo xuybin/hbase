@@ -109,6 +109,10 @@ RUN HADOOP_VER=2.7.5 \
 '        <value>hdfs://master:9000/hbase</value>\n'\
 '    </property>\n'\
 '    <property>\n'\
+'        <name>hbase.zookeeper.property.maxClientCnxns</name>\n'\
+'        <value>3000</value>\n'\
+'    </property>\n'\
+'    <property>\n'\
 '        <name>hbase.zookeeper.quorum</name>\n'\
 '        <value>#ZKS</value>\n'\
 '    </property>\n'\
