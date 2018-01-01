@@ -2,7 +2,7 @@ FROM alpine:latest
 
 VOLUME ["/hdfs"]
 RUN HADOOP_VER=2.7.5 \
- && HBASE_VER=1.3.1 \
+ && HBASE_VER=1.4.0 \
  && URL1="http://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz" \
  && URL2="https://mirrors.aliyun.com/apache/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz" \
  && URL3="http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
