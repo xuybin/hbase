@@ -98,7 +98,7 @@ RUN HADOOP_VER=2.7.5 \
 '    </property>\n'\
 '    <property>\n'\
 '        <name>hbase.column.max.version</name>\n'\
-'        <value>10</value>\n'\
+'        <value>1</value>\n'\
 '    </property>\n'\
 '    <property>\n'\
 '        <name>hbase.tmp.dir</name>\n'\
