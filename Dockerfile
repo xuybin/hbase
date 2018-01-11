@@ -138,7 +138,8 @@ RUN HADOOP_VER=2.7.5 \
  
 
  && echo -e '#!/bin/bash\n'\
- 
+'export HBASE_CLASSPATH=/hbase/lib/*\n'\
+'export HADOOP_CLASSPATH=/hadoop/share/hadoop/tools/lib/*\n'\
 'export JAVA_HOME="/usr/lib/jvm/default-jvm"\n'\
 'export PATH="$PATH:/usr/lib/jvm/default-jvm/bin:/hadoop/bin:/hadoop/sbin:/hbase/bin"\n'\
 >/etc/profile.d/hbase.sh \
