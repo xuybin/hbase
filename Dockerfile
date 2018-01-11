@@ -8,7 +8,7 @@ RUN HADOOP_VER=2.7.5 \
  && URL3="http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
  && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
 
- && apk --update add --no-cache wget tar openssh bash openjdk8 \
+ && apk --update add --no-cache wget tar openssh bash openjdk8-jre-base \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL1" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL2") \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
@@ -29,7 +29,7 @@ RUN HADOOP_VER=2.7.5 \
  && tar zxf hadoop-$HADOOP_VER.tar.gz -C /hadoop --strip 1 \
  && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
  
- && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\n:' /hadoop/etc/hadoop/hadoop-env.sh \
+ && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\nexport HADOOP_CLASSPATH=/hadoop/share/hadoop/tools/lib/*\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/hadoop/etc/hadoop\nexport HADOOP_LOG_DIR=/hdfs/logs\nexport HADOOP_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export YARN_CONF_DIR/ s:.*:export YARN_CONF_DIR=/hadoop/etc/hadoop\nexport YARN_LOG_DIR=/hdfs/logs\nexport YARN_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/yarn-env.sh \
  && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
@@ -122,6 +122,7 @@ RUN HADOOP_VER=2.7.5 \
 
  && echo -e '#!/bin/bash\n'\
 '/hadoop/sbin/start-dfs.sh\n'\
+'/hadoop/sbin/start-yarn.sh\n'\
 '/hbase/bin/start-hbase.sh\n'\
 '/hbase/bin/hbase-daemon.sh start rest\n'\
 >/start-hbase.sh \
@@ -130,12 +131,14 @@ RUN HADOOP_VER=2.7.5 \
  && echo -e '#!/bin/bash\n'\
 '/hbase/bin/hbase-daemon.sh stop rest\n'\
 '/hbase/bin/stop-hbase.sh\n'\
+'/hadoop/sbin/stop-yarn.sh\n'\
 '/hadoop/sbin/stop-dfs.sh\n'\
 >/stop-hbase.sh \
  && chmod -v +x /stop-hbase.sh \
  
 
  && echo -e '#!/bin/bash\n'\
+ 
 'export JAVA_HOME="/usr/lib/jvm/default-jvm"\n'\
 'export PATH="$PATH:/usr/lib/jvm/default-jvm/bin:/hadoop/bin:/hadoop/sbin:/hbase/bin"\n'\
 >/etc/profile.d/hbase.sh \
