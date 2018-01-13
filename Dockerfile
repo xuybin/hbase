@@ -28,7 +28,7 @@ RUN HADOOP_VER=2.7.5 \
 		 echo '  LogLevel quiet'; \
 	  } > /root/.ssh/config \
 	  		 
- && mkdir -p /hadoop /hbase \
+ && mkdir -p /hadoop /hbase  /hbase/conf\
  && tar zxf hadoop-$HADOOP_VER.tar.gz -C /hadoop --strip 1 \
 #  && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
  && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ \
@@ -36,7 +36,7 @@ RUN HADOOP_VER=2.7.5 \
  && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/hadoop/etc/hadoop\nexport HADOOP_LOG_DIR=/hdfs/logs\nexport HADOOP_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export YARN_CONF_DIR/ s:.*:export YARN_CONF_DIR=/hadoop/etc/hadoop\nexport YARN_LOG_DIR=/hdfs/logs\nexport YARN_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/yarn-env.sh \
- && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
+#  && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
  
  && echo -e  '<?xml version="1.0"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n'\
 '<configuration>\n'\
@@ -178,7 +178,7 @@ RUN HADOOP_VER=2.7.5 \
  
  && apk del maven wget tar \
  && rm -rf /hadoop/share/doc /hadoop-$HADOOP_VER.tar.gz \
- && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
+# && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
  && rm -rf /var/cache/apk/* /tmp/*
  
 
