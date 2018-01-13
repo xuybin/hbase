@@ -2,18 +2,21 @@ FROM alpine:latest
 
 VOLUME ["/hdfs"]
 RUN HADOOP_VER=2.7.5 \
- && HBASE_VER=1.4.0 \
+#  && HBASE_VER=1.4.0 \
+ && HBASE_BRANCH=1.4 \
  && URL1="http://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz" \
  && URL2="https://mirrors.aliyun.com/apache/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz" \
- && URL3="http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
- && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
+#  && URL3="http://archive.apache.org/dist/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
+#  && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
+ && URL5="https://codeload.github.com/apache/hbase/zip/branch-$HBASE_BRANCH" \
 
  && apk --update add --no-cache wget tar openssh bash openjdk8 \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL1" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL2") \
- && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
-		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL4") \
-		  
+#  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
+# 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL4") \
+ &&	wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-branch-$HBASE_BRANCH.zip" "$URL5" \ 
+
  && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
  && ssh-keygen -A \
  && ssh-keygen -t rsa -f /root/.ssh/id_rsa -P '' \
@@ -27,7 +30,8 @@ RUN HADOOP_VER=2.7.5 \
 	  		 
  && mkdir -p /hadoop /hbase \
  && tar zxf hadoop-$HADOOP_VER.tar.gz -C /hadoop --strip 1 \
- && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
+#  && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
+ && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ \
  
  && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/hadoop/etc/hadoop\nexport HADOOP_LOG_DIR=/hdfs/logs\nexport HADOOP_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/hadoop-env.sh \
