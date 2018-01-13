@@ -16,7 +16,8 @@ RUN HADOOP_VER=2.7.5 \
 #  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
 # 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL4") \
  &&	wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-branch-$HBASE_BRANCH.zip" "$URL5" \ 
-
+ && apk del wget \
+ 
  && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
  && ssh-keygen -A \
  && ssh-keygen -t rsa -f /root/.ssh/id_rsa -P '' \
@@ -33,7 +34,8 @@ RUN HADOOP_VER=2.7.5 \
  && rm -rf /hadoop/share/doc /hadoop-$HADOOP_VER.tar.gz \
 #  && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
 #  && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
- && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ && tar zxf hbase-branch-$HBASE_BRANCH/hbase-assembly/target/*-bin.tar.gz -C /hbase --strip 1 && rm -rf hbase-branch-$HBASE_BRANCH hbase-branch-$HBASE_BRANCH.zip \
+ && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ && tar zxf hbase-branch-$HBASE_BRANCH/hbase-assembly/target/*-bin.tar.gz -C /hbase --strip 1 \
+ && apk del maven && rm -rf /usr/share/java/maven-* /root/.m2 /root/.wget* hbase-branch-$HBASE_BRANCH hbase-branch-$HBASE_BRANCH.zip \
  
  && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/hadoop/etc/hadoop\nexport HADOOP_LOG_DIR=/hdfs/logs\nexport HADOOP_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/hadoop-env.sh \
@@ -177,8 +179,6 @@ RUN HADOOP_VER=2.7.5 \
 >/usr/local/bin/entrypoint.sh \
  && chmod -v +x /usr/local/bin/entrypoint.sh \
  
- 
- && apk del maven wget \
  && rm -rf /var/cache/apk/* /tmp/*
  
 
