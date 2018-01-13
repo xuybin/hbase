@@ -10,7 +10,7 @@ RUN HADOOP_VER=2.7.5 \
 #  && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
  && URL5="https://codeload.github.com/apache/hbase/zip/branch-$HBASE_BRANCH" \
 
- && apk --update add --no-cache wget tar openssh bash openjdk8 \
+ && apk --update add --no-cache maven wget tar openssh bash openjdk8 \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL1" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL2") \
 #  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
@@ -176,7 +176,7 @@ RUN HADOOP_VER=2.7.5 \
  && chmod -v +x /usr/local/bin/entrypoint.sh \
  
  
- && apk del wget tar \
+ && apk del maven wget tar \
  && rm -rf /hadoop/share/doc /hadoop-$HADOOP_VER.tar.gz \
  && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
  && rm -rf /var/cache/apk/* /tmp/*
