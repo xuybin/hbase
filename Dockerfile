@@ -10,7 +10,7 @@ RUN HADOOP_VER=2.7.5 \
 #  && URL4="https://mirrors.aliyun.com/apache/hbase/$HBASE_VER/hbase-$HBASE_VER-bin.tar.gz" \
  && URL5="https://codeload.github.com/apache/hbase/zip/branch-$HBASE_BRANCH" \
 
- && apk --update add --no-cache maven wget tar openssh bash openjdk8 \
+ && apk --update add --no-cache maven wget openssh bash openjdk8 \
  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL1" || \
 		 wget -t 10 --max-redirect 1 --retry-connrefused -O "hadoop-$HADOOP_VER.tar.gz" "$URL2") \
 #  && (wget -t 10 --max-redirect 1 --retry-connrefused -O "hbase-$HBASE_VER.tar.gz" "$URL3" || \
@@ -28,15 +28,17 @@ RUN HADOOP_VER=2.7.5 \
 		 echo '  LogLevel quiet'; \
 	  } > /root/.ssh/config \
 	  		 
- && mkdir -p /hadoop /hbase  /hbase/conf\
+ && mkdir -p /hadoop /hbase \
  && tar zxf hadoop-$HADOOP_VER.tar.gz -C /hadoop --strip 1 \
+ && rm -rf /hadoop/share/doc /hadoop-$HADOOP_VER.tar.gz \
 #  && tar zxf hbase-$HBASE_VER.tar.gz -C /hbase --strip 1 \
- && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ \
+#  && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
+ && unzip -x -q hbase-branch-$HBASE_BRANCH.zip / && cd hbase-branch-$HBASE_BRANCH && mvn -DskipTests -Dhadoop-two.version=$HADOOP_VER package assembly:single && cd ../ && tar zxf hbase-branch-$HBASE_BRANCH/hbase-assembly/target/*-bin.tar.gz -C /hbase --strip 1 && rm -rf hbase-branch-$HBASE_BRANCH hbase-branch-$HBASE_BRANCH.zip \
  
  && sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HADOOP_PREFIX=/hadoop\nexport HADOOP_HOME=/hadoop\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=/hadoop/etc/hadoop\nexport HADOOP_LOG_DIR=/hdfs/logs\nexport HADOOP_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/hadoop-env.sh \
  && sed -i '/^export YARN_CONF_DIR/ s:.*:export YARN_CONF_DIR=/hadoop/etc/hadoop\nexport YARN_LOG_DIR=/hdfs/logs\nexport YARN_PID_DIR=/hdfs/pids\n:' /hadoop/etc/hadoop/yarn-env.sh \
-#  && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
+ && sed -i '/^# export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/default-jvm\nexport HBASE_HOME=/hbase\nexport HBASE_LOG_DIR=/hdfs/logs\nexport HBASE_PID_DIR=/hdfs/pids\n:' /hbase/conf/hbase-env.sh \
  
  && echo -e  '<?xml version="1.0"?>\n<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>\n'\
 '<configuration>\n'\
@@ -118,7 +120,7 @@ RUN HADOOP_VER=2.7.5 \
 '    </property>\n'\
 '    <property>\n'\
 '        <name>hbase.zookeeper.quorum</name>\n'\
-'        <value>#ZKS</value>\n'\
+'        <value>ZKS</value>\n'\
 '    </property>\n'\
 '</configuration>\n'\
 >/hbase/conf/hbase-site.xml \
@@ -166,7 +168,7 @@ RUN HADOOP_VER=2.7.5 \
 'fi\n'\
 'awk "BEGIN{info=\"$SLAVES\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hadoop/etc/hadoop/slaves\n'\
 'awk "BEGIN{info=\"$SLAVES\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/regionservers\n'\
-'sed -i "s/#ZKS/$ZKS/" hbase/conf/hbase-site.xml\n'\
+'sed -i "s/ZKS/$ZKS/" hbase/conf/hbase-site.xml\n'\
 'if [ ! -z ${BKMS} ]; then\n'\
 '    awk "BEGIN{info=\"$BKMS\";tlen=split(info,tA,\",\");for(k=1;k<=tlen;k++){print tA[k];}}">/hbase/conf/backup-masters\n'\
 'fi\n'\
@@ -176,9 +178,7 @@ RUN HADOOP_VER=2.7.5 \
  && chmod -v +x /usr/local/bin/entrypoint.sh \
  
  
- && apk del maven wget tar \
- && rm -rf /hadoop/share/doc /hadoop-$HADOOP_VER.tar.gz \
-# && rm -rf /hbase/doc /hbase-$HBASE_VER.tar.gz \
+ && apk del maven wget \
  && rm -rf /var/cache/apk/* /tmp/*
  
 
