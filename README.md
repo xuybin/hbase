@@ -1,6 +1,6 @@
 # xuybin/hbase
 ![hbase](https://raw.githubusercontent.com/xuybin/hbase/master/hbase.png)
-## Run HBase&HDFS cluster with docker-compose
+## Run HBase&HDFS&YARN Custer within Docker Compose
 In China
 ```bash
 docker rmi -f registry.cn-shenzhen.aliyuncs.com/xuybin/hbase && curl -L -s https://raw.githubusercontent.com/xuybin/hbase/master/docker-compose-aliyun.yml >docker-compose.yml && docker-compose up -d
