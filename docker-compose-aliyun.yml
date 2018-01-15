@@ -12,7 +12,7 @@ services:
     volumes:
       - hdfs-master:/hdfs
     networks:
-      - habase
+      - hbase
     environment:
       - BKMS=slave1
       - ZKS=slave1,slave2,slave3
@@ -27,7 +27,7 @@ services:
     volumes:
       - hdfs-slave1:/hdfs
     networks:
-      - habase
+      - hbase
     environment:
       - BKMS=slave1
       - ZKS=slave1,slave2,slave3
@@ -42,7 +42,7 @@ services:
     volumes:
       - hdfs-slave2:/hdfs
     networks:
-      - habase
+      - hbase
     environment:
       - BKMS=slave1
       - ZKS=slave1,slave2,slave3
@@ -57,13 +57,13 @@ services:
     volumes:
       - hdfs-slave3:/hdfs
     networks:
-      - habase
+      - hbase
     environment:
       - BKMS=slave1
       - ZKS=slave1,slave2,slave3
       - SLAVES=slave1,slave2,slave3
 networks:
-  habase:
+  hbase:
 
 volumes:
   hdfs-master:
