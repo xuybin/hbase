@@ -25,7 +25,7 @@ services:
     image: xuybin/hbase
     ports:
       - 16031:16030
-      - 80421:8042
+      - 8421:8042
     volumes:
       - hdfs-slave1:/hdfs
     networks:
@@ -41,7 +41,7 @@ services:
     image: xuybin/hbase
     ports:
       - 16032:16030
-      - 80422:8042
+      - 8422:8042
     volumes:
       - hdfs-slave2:/hdfs
     networks:
@@ -57,7 +57,7 @@ services:
     image: xuybin/hbase
     ports:
       - 16033:16030
-      - 80423:8042
+      - 8423:8042
     volumes:
       - hdfs-slave3:/hdfs
     networks:
