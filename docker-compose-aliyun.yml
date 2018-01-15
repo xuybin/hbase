@@ -7,7 +7,8 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/xuybin/hbase
     ports:
       - 50070:50070
-      - 50080:8080
+      - 8080:8080
+      - 8088:8088
       - 16010:16010
     volumes:
       - hdfs-master:/hdfs
@@ -24,6 +25,7 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/xuybin/hbase
     ports:
       - 16031:16030
+      - 80421:8042
     volumes:
       - hdfs-slave1:/hdfs
     networks:
@@ -39,6 +41,7 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/xuybin/hbase
     ports:
       - 16032:16030
+      - 80422:8042
     volumes:
       - hdfs-slave2:/hdfs
     networks:
@@ -54,6 +57,7 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/xuybin/hbase
     ports:
       - 16033:16030
+      - 80423:8042
     volumes:
       - hdfs-slave3:/hdfs
     networks:
