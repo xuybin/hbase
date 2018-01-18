@@ -133,10 +133,12 @@ RUN HADOOP_VER=2.7.5 \
 '/hadoop/sbin/start-yarn.sh\n'\
 '/hbase/bin/start-hbase.sh\n'\
 '/hbase/bin/hbase-daemon.sh start rest\n'\
+'/hbase/bin/hbase-daemon.sh start thrift2\n'\
 >/start-hbase.sh \
  && chmod -v +x /start-hbase.sh \
  
  && echo -e '#!/bin/bash\n'\
+'/hbase/bin/hbase-daemon.sh stop thrift2\n'\
 '/hbase/bin/hbase-daemon.sh stop rest\n'\
 '/hbase/bin/stop-hbase.sh\n'\
 '/hadoop/sbin/stop-yarn.sh\n'\
